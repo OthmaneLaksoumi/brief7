@@ -1,4 +1,4 @@
-<?php 
+<?php
 $conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
 $stmt = $conn->prepare('SELECT * FROM categories WHERE isHide = 0');
 $stmt->execute();
@@ -12,9 +12,16 @@ $categories = json_encode($catgs);
 $products = json_encode($product);
 
 
-if(isset($_GET['table'])) {
+if (isset($_GET['table'])) {
     $str = $_GET['table'];
     echo $$str;
+}
+
+if (isset($_GET['addToCart'])) {
+    // $reference = $_GET['addToCart'];
+    // $stmt2 = $conn->prepare("UPDATE products SET isCart = 1 WHERE reference = '$reference'");
+    // $stmt2->execute();
+    // echo $_GET['addToCart'];
 }
 
 
@@ -24,4 +31,3 @@ if(isset($_GET['table'])) {
 // echo '<pre>';
 // print_r($result);
 // echo '</pre>';
-?>

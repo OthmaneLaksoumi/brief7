@@ -8,6 +8,38 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"">
 	<link href=" https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 	<link rel="stylesheet" href="css/cart.css">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+	<title>Electro - HTML Ecommerce Template</title>
+
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+
+	<!-- Slick -->
+	<link type="text/css" rel="stylesheet" href="css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="css/slick-theme.css" />
+
+	<!-- nouislider -->
+	<link type="text/css" rel="stylesheet" href="css/nouislider.min.css" />
+
+	<!-- Font Awesome Icon -->
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="css/style.css" />
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
 </head>
 
 <body>
@@ -34,7 +66,7 @@
 												<div class="row">
 													<div class="col-md-5 product-name">
 														<div class="product-name">
-															<a href="#" >Lorem Ipsum dolor</a>
+															<a href="#">Lorem Ipsum dolor</a>
 															<div class="product-info">
 																<div>Display: <span class="value">5 inch</span></div>
 																<div>RAM: <span class="value">4GB</span></div>
@@ -44,8 +76,7 @@
 													</div>
 													<div class="col-md-4 quantity">
 														<label for="quantity">Quantity:</label>
-														<input id="quantity" type="number" value="1"
-															class="form-control quantity-input">
+														<input id="quantity" type="number" value="1" class="form-control quantity-input">
 													</div>
 													<div class="col-md-3 price">
 														<span>$120</span>
@@ -80,8 +111,7 @@
 													</div>
 													<div class="col-md-4 quantity">
 														<label for="quantity">Quantity:</label>
-														<input id="quantity" type="number" value="1"
-															class="form-control quantity-input">
+														<input id="quantity" type="number" value="1" class="form-control quantity-input">
 													</div>
 													<div class="col-md-3 price">
 														<span>$120</span>
@@ -117,8 +147,7 @@
 													</div>
 													<div class="col-md-4 quantity">
 														<label for="quantity">Quantity:</label>
-														<input id="quantity" type="number" value="1"
-															class="form-control quantity-input">
+														<input id="quantity" type="number" value="1" class="form-control quantity-input">
 													</div>
 													<div class="col-md-3 price">
 														<span>$120</span>
@@ -139,12 +168,9 @@
 						<div class="col-md-12 col-lg-4">
 							<div class="summary">
 								<h3>Summary</h3>
-								<div class="summary-item"><span class="text">Subtotal</span><span
-										class="price">$360</span></div>
-								<div class="summary-item"><span class="text">Discount</span><span
-										class="price">$0</span></div>
-								<div class="summary-item"><span class="text">Shipping</span><span
-										class="price">$0</span></div>
+								<div class="summary-item"><span class="text">Subtotal</span><span class="price">$360</span></div>
+								<div class="summary-item"><span class="text">Discount</span><span class="price">$0</span></div>
+								<div class="summary-item"><span class="text">Shipping</span><span class="price">$0</span></div>
 								<div class="summary-item"><span class="text">Total</span><span class="price">$360</span>
 								</div>
 								<button type="button" class="btn btn-success btn-lg btn-block">Confirm the order</button>

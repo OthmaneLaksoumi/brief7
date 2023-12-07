@@ -358,6 +358,37 @@ session_start();
 				}
 			});
 		});
+		// Search of Products
+		let search = document.getElementById('search-input');
+		search.addEventListener('keyup', function() {
+
+			let myRequest = new XMLHttpRequest();
+			myRequest.open("GET", "admin/ajaxConn.php?liveSearch=" + search.value, true);
+			myRequest.onreadystatechange = function() {
+				if (this.readyState === 4 && this.status === 200) {
+					// result = JSON.parse(this.responseText);
+					if (this.responseText != "") {
+						menu.innerHTML = '';
+						JSON.parse(this.responseText).forEach(function(pro) {
+							displayProducts(pro);
+						});
+					} else {
+						menu.innerHTML = `
+							<div class="col-md-12">
+								<div class="section-title text-center">
+									<h3 class="title" id="title-catg">ALl Products</h3>
+								</div>
+							</div>
+				`;
+						products.forEach(function(pro) {
+							displayProducts(pro);
+						});
+					}
+
+				}
+			}
+			myRequest.send();
+		});
 	</script>
 
 </body>
