@@ -1,6 +1,12 @@
 <?php
 include("connection.php");
-$stmt = $conn->prepare("SELECT * FROM panier");
+
+
+if(isset($_SESSION['client'])) {
+
+
+$client = $_SESSION["client"];
+$stmt = $conn->prepare("SELECT * FROM panier WHERE client_username = '$client'");
 $stmt->execute();
 $panier = $stmt->fetchAll();
 
@@ -128,7 +134,7 @@ $subTotal = 0;
 								<h3>Summary</h3>
 								<div class="summary-item"><span class="text">Total</span><span class="price"><?php echo number_format($subTotal, 2) . "DH"; ?></span>
 								</div>
-								<button type="button" class="btn btn-success btn-lg btn-block">Confirm the order</button>
+								<button type="button" class="btn btn-success btn-lg btn-block" onclick="addCommand()">Confirm the order</button>
 								<a href="product.php" class="text-white"><button type="button" class="btn btn-warning  btn-lg btn-block">Continue my shopping</button></a>
 							</div>
 						</div>
@@ -224,10 +230,13 @@ $subTotal = 0;
 		let refProduct =input.getAttribute('data-product');
 		let myRequest = new XMLHttpRequest();
 		myRequest.open("GET", "ajax.php?clientRemove=" + client + "&refProductRemove=" + refProduct, true);
-		// myRequest.onreadystatechange = function() {
-		// 	if (this.readyState === 4 && this.status === 200) {
-		// 	}
-		// }
+		myRequest.onreadystatechange = function() {
+			if (this.readyState === 4 && this.status === 200) {
+				if(this.responseText === "1") {
+					location.reload();
+				}
+			}
+		}
 		myRequest.send();
 	}
 </script>
@@ -235,3 +244,8 @@ $subTotal = 0;
 </body>
 
 </html>
+
+<?php } else {
+	echo '<h1>Please Login Your Account</h1>';
+	header("Refresh: 1; url=loginClient.php");
+} ?>

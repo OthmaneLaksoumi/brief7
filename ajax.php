@@ -16,11 +16,11 @@ if (isset($_GET["client"]) && isset($_GET["refProduct"]) && isset($_GET["qnt"]))
     $client = $_GET["client"];
     $ref = $_GET["refProduct"];
     $qnt = $_GET["qnt"];
-    if ($qnt === 0) {
-        header('Location: indeX.php');
-        exit;
-    } else if($qnt > 0) {
+    if ($qnt > 0) {
         $stmt2 = $conn->prepare("UPDATE panier SET qnt = '$qnt' WHERE client_username = '$client' AND product_ref = '$ref'");
+        $stmt2->execute();
+    } else if ($qnt === 0) {
+        $stmt2 = $conn->prepare("DELETE FROM panier WHERE client_username = '$client' AND product_ref = '$ref'");
         $stmt2->execute();
     }
 }
@@ -30,5 +30,5 @@ if (isset($_GET["clientRemove"]) && isset($_GET["refProductRemove"])) {
     $ref = $_GET["refProductRemove"];
     $stmt3 = $conn->prepare("DELETE FROM panier WHERE client_username = '$client' AND product_ref = '$ref'");
     $stmt3->execute();
-
+    echo true;
 }

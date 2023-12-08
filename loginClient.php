@@ -13,6 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	if (count($result) > 0) {
 		$_SESSION["client"] = $username;
+		header('Location: index.php');
+		exit;
 	} else {
 		$noExist = true;
 	}
@@ -29,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>Electro - HTML Ecommerce Template</title>
+	<title>Electro</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -71,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					<!-- LOGO -->
 					<div class="col-md-3">
 						<div class="header-logo">
-							<a href="#" class="logo">
+							<a href="index.php" class="logo">
 								<img src="./img/logo.png" alt="">
 							</a>
 						</div>
@@ -461,5 +463,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </html>
 <?php }else {
-	
+	header('Location: index.php');
+	exit;
 } ?>

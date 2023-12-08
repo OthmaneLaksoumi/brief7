@@ -62,12 +62,14 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 						<li><a href="#"><i class="fa fa-map-marker"></i> Youcode Safi</a></li>
 					</ul>
 					<ul class="header-links pull-right">
-						<?php if (isset($_SESSION['client'])) { ?>
-							<li><a href="#"><i class="fa fa-user-o"></i> Laksoumi99</a></li>
-						<?php } else { ?>
-							<li><a href="loginClinet.php"><i class="fa fa-user-o"></i> Login</a></li>
+					<?php if (isset($_SESSION['client'])) { ?>
+						<li><a href="#"><i class="fa fa-user-o"></i> <?php echo $_SESSION['client'] ?></a></li>
+						<li><a href="logoutClient.php"><i class="fa fa-user-o"></i> Logout</a></li>
+					<?php } else { ?>
+						<li><a href="loginClient.php"><i class="fa fa-user-o"></i> Login</a></li>
 
-						<?php } ?>
+					<?php } ?>
+				</ul>
 					</ul>
 				</div>
 			</div>

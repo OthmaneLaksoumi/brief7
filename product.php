@@ -9,6 +9,7 @@ try {
 	$stmt1->execute();
 	$catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
+	echo "" . $e->getMessage();
 }
 session_start();
 
@@ -48,6 +49,10 @@ session_start();
 	<style>
 		#search-input {
 			border-radius: 20px;
+		}
+		#pagination {
+			cursor: pointer;
+			margin: 10vh 40%;
 		}
 	</style>
 
@@ -95,13 +100,7 @@ session_start();
 					<div class="col-md-6">
 						<div class="header-search">
 							<form>
-								<!-- <select class="input-select">
-									<option value="0">All Categories</option>
-									<option value="1">Category 01</option>
-									<option value="1">Category 02</option>
-								</select> -->
 								<input class="input" id="search-input" style="width: 35vw;" placeholder="Search here">
-								<!-- <button class="search-btn">Search</button> -->
 							</form>
 						</div>
 					</div>
@@ -110,58 +109,7 @@ session_start();
 					<!-- ACCOUNT -->
 					<div class="col-md-3 clearfix">
 						<div class="header-ctn">
-							<!-- Wishlist -->
-							<!-- <div>
-								<a href="#">
-									<i class="fa fa-heart-o"></i>
-									<span>Your Wishlist</span>
-									<div class="qty">2</div>
-								</a>
-							</div> -->
-							<!-- /Wishlist -->
 
-							<!-- Cart -->
-							<!-- <div class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-									<i class="fa fa-shopping-cart"></i>
-									<span>Your Cart</span>
-									<div class="qty">3</div>
-								</a>
-								<div class="cart-dropdown">
-									<div class="cart-list">
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product01.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
-
-										<div class="product-widget">
-											<div class="product-img">
-												<img src="./img/product02.png" alt="">
-											</div>
-											<div class="product-body">
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-											</div>
-											<button class="delete"><i class="fa fa-close"></i></button>
-										</div>
-									</div>
-									<div class="cart-summary">
-										<small>3 Item(s) selected</small>
-										<h5>SUBTOTAL: $2940.00</h5>
-									</div>
-									<div class="cart-btns">
-										<a href="#">View Cart</a>
-										<a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
-									</div>
-								</div>
-							</div> -->
-							<!-- /Cart -->
 
 							<!-- Menu Toogle -->
 							<div class="menu-toggle">
@@ -231,7 +179,9 @@ session_start();
 	</div>
 	<!-- /Section -->
 
-	<!-- NEWSLETTER -->
+	<ul class="pagination mx-auto" id="pagination">
+
+	</ul>
 
 	<!-- FOOTER -->
 	<footer id="footer">
@@ -277,19 +227,19 @@ session_start();
 		</div>
 		<!-- /top footer -->
 
-		<!-- bottom footer -->
 
-		<!-- /bottom footer -->
+
 	</footer>
+	
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
-	<!-- <script src="js/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/slick.min.js"></script>
 	<script src="js/nouislider.min.js"></script>
 	<script src="js/jquery.zoom.min.js"></script>
-	<script src="js/main.js"></script> -->
+	<script src="js/main.js"></script>
 
 	<script>
 		let listCatg = document.querySelectorAll('.li-padding');
@@ -321,14 +271,14 @@ session_start();
 					<div class="product-img">
 						<img src="admin/${object['img']}" alt="">
 						<div class="product-label">
-									<span class="sale">${(object['prixOffre'] - object['prixFinal']) / object['prixFinal'] * 100}%</span>
+									<span class="sale">-${(object['prixFinal'] - object['prixOffre']) / object['prixFinal'] * 100}%</span>
 						</div>
 					</div>
 					
 					<div class="product-body">
 						<p class="product-category">${object['catg']}</p>
 						<h3 class="product-name"><a href="">${object['etiquette']}</a></h3>
-						<h4 class="product-price">${object['prixFinal']}DH <del class="product-old-price">${object['prixOffre']}DH</del></h4>
+						<h4 class="product-price">${object['prixOffre']}DH <del class="product-old-price">${object['prixFinal']}DH</del></h4>
 						<div class="product-rating">
 							<i class="fa fa-star"></i>
 							<i class="fa fa-star"></i>
@@ -416,8 +366,37 @@ session_start();
 				}
 			}
 			myRequest.send();
-
 		}
+
+		/* Pagination */
+		let itemsPerPage = 4;
+		let nbrOfPages = Math.ceil(products.length / itemsPerPage);
+		let pagination = document.getElementById('pagination');
+		for (let i = 0; i < nbrOfPages; i++) {
+			let liNbr = document.createElement('li');
+			liNbr.className = 'list-group-item list';
+			liNbr.textContent = i + 1;
+			pagination.appendChild(liNbr);
+		}
+
+		let allList =document.querySelectorAll('.list');
+		allList.forEach(function(oneList) {
+			oneList.addEventListener('click', function() {
+				menu.innerHTML = `
+							<div class="col-md-12">
+								<div class="section-title text-center">
+									<h3 class="title" id="title-catg">ALl Products</h3>
+								</div>
+							</div>
+				`;
+			for(let i = itemsPerPage * (Number(oneList.textContent) - 1); i < itemsPerPage * (Number(oneList.textContent)); i++) {
+				displayProducts(products[i]);
+			}
+		});
+		});
+
+
+		/* End Of Pagination */
 	</script>
 
 

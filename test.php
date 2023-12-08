@@ -1,6 +1,15 @@
 <?php
 session_start();
 $conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
+
+
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
+
+var_dump(isset($_SESSION['client']));
+
+
 if(isset($_GET['ref'])) {
     $client = $_SESSION['client'];
     $cln = $_GET['client'];
