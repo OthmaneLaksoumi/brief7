@@ -1,3 +1,20 @@
+<?php
+include("connection.php");
+$stmt = $conn->prepare("SELECT * FROM panier");
+$stmt->execute();
+$panier = $stmt->fetchAll();
+
+$stmt1 = $conn->prepare("SELECT * FROM products ");
+$stmt1->execute();
+$products = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+// echo '<pre>';
+// print_r($panier);
+// echo '</pre>';
+$subTotal = 0;
+
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -55,126 +72,64 @@
 				<div class="content">
 					<div class="row">
 						<div class="col-md-12 col-lg-8">
-							<div class="items">
-								<div class="product">
-									<div class="row">
-										<div class="col-md-3">
-											<img class="img-fluid mx-auto d-block image" src="images/p9.png">
-										</div>
-										<div class="col-md-8">
-											<div class="info">
-												<div class="row">
-													<div class="col-md-5 product-name">
-														<div class="product-name">
-															<a href="#">Lorem Ipsum dolor</a>
-															<div class="product-info">
-																<div>Display: <span class="value">5 inch</span></div>
-																<div>RAM: <span class="value">4GB</span></div>
-																<div>Memory: <span class="value">32GB</span></div>
-															</div>
-														</div>
-													</div>
-													<div class="col-md-4 quantity">
-														<label for="quantity">Quantity:</label>
-														<input id="quantity" type="number" value="1" class="form-control quantity-input">
-													</div>
-													<div class="col-md-3 price">
-														<span>$120</span>
-													</div>
-													<div class="col-md-4 delete">
-														<button type="button" class="btn btn-danger btn-block">
-															Delete
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="product">
-									<div class="row">
-										<div class="col-md-3">
-											<img class="img-fluid mx-auto d-block image" src="images/p7.png">
-										</div>
-										<div class="col-md-8">
-											<div class="info">
-												<div class="row">
-													<div class="col-md-5 product-name">
-														<div class="product-name">
-															<a href="#">Lorem Ipsum dolor</a>
-															<div class="product-info">
-																<div>Display: <span class="value">5 inch</span></div>
-																<div>RAM: <span class="value">4GB</span></div>
-																<div>Memory: <span class="value">32GB</span></div>
-															</div>
-														</div>
-													</div>
-													<div class="col-md-4 quantity">
-														<label for="quantity">Quantity:</label>
-														<input id="quantity" type="number" value="1" class="form-control quantity-input">
-													</div>
-													<div class="col-md-3 price">
-														<span>$120</span>
-													</div>
-													<div class="col-md-4 delete">
-														<button type="button" class="btn btn-danger btn-block">
-															Delete
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="product">
-									<div class="row">
-										<div class="col-md-3">
-											<img class="img-fluid mx-auto d-block image" src="images/p3.png">
-										</div>
-										<div class="col-md-8">
-											<div class="info">
-												<div class="row">
-													<div class="col-md-5 product-name">
-														<div class="product-name">
-															<a href="#">Lorem Ipsum dolor</a>
-															<div class="product-info">
-																<div>Display: <span class="value">5 inch</span></div>
-																<div>RAM: <span class="value">4GB</span></div>
-																<div>Memory: <span class="value">32GB</span></div>
+							<div class="items" id="items">
 
+								<?php foreach ($panier as $item) :
+									$client = $item['client_username'];
+									$ref = $item['product_ref'];
+									$qnt = $item['qnt'];
+									$stmt1 = $conn->prepare("SELECT * FROM products WHERE reference = '$ref'");
+									$stmt1->execute();
+									$product = $stmt1->fetchAll(PDO::FETCH_ASSOC); ?>
+									<div class="product">
+										<div class="row">
+											<div class="col-md-3">
+												<img class="img-fluid mx-auto d-block image" src="<?php echo "admin/" . $product[0]['img']; ?>">
+											</div>
+											<div class="col-md-8">
+												<div class="info">
+													<div class="row">
+														<div class="col-md-5 product-name">
+															<div class="product-name">
+																<a href="#"><?php echo $product[0]['etiquette']; ?></a>
+																<div class="product-info">
+																	<div class="mb-3">
+																		<?php echo $product[0]['descpt']; ?>
+																	</div>
+
+																</div>
 															</div>
 														</div>
-													</div>
-													<div class="col-md-4 quantity">
-														<label for="quantity">Quantity:</label>
-														<input id="quantity" type="number" value="1" class="form-control quantity-input">
-													</div>
-													<div class="col-md-3 price">
-														<span>$120</span>
-													</div>
-													<div class="col-md-4 delete">
-														<button type="button" class="btn btn-danger btn-block">
-															Delete
-														</button>
-													</div>
+														<div class="col-md-4 quantity">
+															<label for="quantity">Quantity:</label>
+															<input id="quantity" type="number" data-client="<?php echo $item['client_username'] ?>" data-product="<?php echo $item['product_ref'] ?>" onchange="Addqnt(this)" value="<?php echo $item['qnt']; ?>" class="form-control quantity-input">
+														</div>
+														<div class="col-md-3 price">
+															<span><?php echo number_format($product[0]['prixOffre'] * $qnt, 2) . "DH";
+																	$subTotal += $product[0]['prixOffre'] * $qnt;  ?></span>
+														</div>
+														<div class="col-md-4 delete">
+															<button type="button" class="btn btn-danger btn-block" data-client="<?php echo $item['client_username'] ?>" data-product="<?php echo $item['product_ref'] ?>" onclick="deleteFromPanier(this)">
+																Delete
+															</button>
+														</div>
 
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>
+								<?php endforeach; ?>
+
 							</div>
 						</div>
 						<div class="col-md-12 col-lg-4">
 							<div class="summary">
 								<h3>Summary</h3>
-								<div class="summary-item"><span class="text">Subtotal</span><span class="price">$360</span></div>
-								<div class="summary-item"><span class="text">Discount</span><span class="price">$0</span></div>
-								<div class="summary-item"><span class="text">Shipping</span><span class="price">$0</span></div>
-								<div class="summary-item"><span class="text">Total</span><span class="price">$360</span>
+								<div class="summary-item"><span class="text">Total</span><span class="price"><?php echo number_format($subTotal, 2) . "DH"; ?></span>
 								</div>
 								<button type="button" class="btn btn-success btn-lg btn-block">Confirm the order</button>
-								<button type="button" class="btn btn-warning  btn-lg btn-block">Continue my shopping</button>
+								<a href="product.php" class="text-white"><button type="button" class="btn btn-warning  btn-lg btn-block">Continue my shopping</button></a>
 							</div>
 						</div>
 					</div>
@@ -185,6 +140,98 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+	// function getData(tableName) {
+	// 	var result;
+	// 	let myRequest = new XMLHttpRequest();
+	// 	myRequest.open("GET", "ajax.php?table=" + tableName, false);
+	// 	myRequest.onreadystatechange = function() {
+	// 		if (this.readyState === 4 && this.status === 200) {
+	// 			result = JSON.parse(this.responseText);
+	// 		}
+	// 	}
+	// 	myRequest.send();
+	// 	return result;
+	// }
+
+	// let products = getData('products');
+	// let items = document.getElementById("items");
+
+	// for (let i = 0; i < localStorage.length; i++) {
+	// 	products.forEach(function(pro) {
+	// 		console.log(Number(pro['reference']) == localStorage.key(i));	
+	// 		if (Number(pro['reference']) == localStorage.key(i)) {
+
+	// 			items.innerHTML += `
+	// 			<div class="product">
+	// 				<div class="row">
+	// 					<div class="col-md-3">
+	// 						<img class="img-fluid mx-auto d-block image" src="admin/${pro['img']}">
+	// 					</div>
+	// 					<div class="col-md-8">
+	// 						<div class="info">
+	// 							<div class="row">
+	// 								<div class="col-md-5 product-name">
+	// 									<div class="product-name">
+	// 										<a href="#">Lorem Ipsum dolor</a>
+	// 										<div class="product-info">
+	// 											<div>Display: <span class="value">5 inch</span></div>
+	// 											<div>RAM: <span class="value">4GB</span></div>
+	// 											<div>Memory: <span class="value">32GB</span></div>
+
+	// 										</div>
+	// 									</div>
+	// 								</div>
+	// 								<div class="col-md-4 quantity">
+	// 									<label for="quantity">Quantity:</label>
+	// 									<input id="quantity" type="number" value="1" class="form-control quantity-input">
+	// 								</div>
+	// 								<div class="col-md-3 price">
+	// 									<span>$120</span>
+	// 								</div>
+	// 								<div class="col-md-4 delete">
+	// 									<button type="button" class="btn btn-danger btn-block">
+	// 										Delete
+	// 									</button>
+	// 								</div>
+
+	// 							</div>
+	// 						</div>
+	// 					</div>
+	// 				</div>
+	// 			</div>
+	// 			`;
+	// 		}
+	// 	});
+	// }
+
+	function Addqnt(input) {
+		let client = input.getAttribute('data-client');
+		let refProduct =input.getAttribute('data-product');
+		let myRequest = new XMLHttpRequest();
+		myRequest.open("GET", "ajax.php?client=" + client + "&refProduct=" + refProduct + "&qnt=" + input.value, true);
+		// myRequest.onreadystatechange = function() {
+		// 	if (this.readyState === 4 && this.status === 200) {
+		// 		console.log(this.responseText);
+		// 	}
+		// }
+		myRequest.send();
+	}
+
+	function deleteFromPanier(input) {
+		let client = input.getAttribute('data-client');
+		let refProduct =input.getAttribute('data-product');
+		let myRequest = new XMLHttpRequest();
+		myRequest.open("GET", "ajax.php?clientRemove=" + client + "&refProductRemove=" + refProduct, true);
+		// myRequest.onreadystatechange = function() {
+		// 	if (this.readyState === 4 && this.status === 200) {
+		// 	}
+		// }
+		myRequest.send();
+	}
+</script>
+
 </body>
 
 </html>

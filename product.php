@@ -23,7 +23,7 @@ session_start();
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>Electro - HTML Ecommerce Template</title>
+	<title>Menu</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -56,7 +56,24 @@ session_start();
 <body>
 	<!-- HEADER -->
 	<header>
+		<div id="top-header">
+			<div class="container">
+				<ul class="header-links pull-left">
+					<li><a href="#"><i class="fa fa-phone"></i> +212642653021</a></li>
+					<li><a href="#"><i class="fa fa-envelope-o"></i> class404@electro.com</a></li>
+					<li><a href="#"><i class="fa fa-map-marker"></i> Youcode Safi</a></li>
+				</ul>
+				<ul class="header-links pull-right">
+					<?php if (isset($_SESSION['client'])) { ?>
+						<li><a href="#"><i class="fa fa-user-o"></i> <?php echo $_SESSION['client'] ?></a></li>
+						<li><a href="logoutClient.php"><i class="fa fa-user-o"></i> Logout</a></li>
+					<?php } else { ?>
+						<li><a href="loginClient.php"><i class="fa fa-user-o"></i> Login</a></li>
 
+					<?php } ?>
+				</ul>
+			</div>
+		</div>
 
 		<!-- MAIN HEADER -->
 		<div id="header">
@@ -67,7 +84,7 @@ session_start();
 					<!-- LOGO -->
 					<div class="col-md-3">
 						<div class="header-logo">
-							<a href="#" class="logo">
+							<a href="index.php" class="logo">
 								<img src="./img/logo.png" alt="">
 							</a>
 						</div>
@@ -94,17 +111,17 @@ session_start();
 					<div class="col-md-3 clearfix">
 						<div class="header-ctn">
 							<!-- Wishlist -->
-							<div>
+							<!-- <div>
 								<a href="#">
 									<i class="fa fa-heart-o"></i>
 									<span>Your Wishlist</span>
 									<div class="qty">2</div>
 								</a>
-							</div>
+							</div> -->
 							<!-- /Wishlist -->
 
 							<!-- Cart -->
-							<div class="dropdown">
+							<!-- <div class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 									<i class="fa fa-shopping-cart"></i>
 									<span>Your Cart</span>
@@ -143,7 +160,7 @@ session_start();
 										<a href="#">Checkout <i class="fa fa-arrow-circle-right"></i></a>
 									</div>
 								</div>
-							</div>
+							</div> -->
 							<!-- /Cart -->
 
 							<!-- Menu Toogle -->
@@ -310,7 +327,7 @@ session_start();
 					
 					<div class="product-body">
 						<p class="product-category">${object['catg']}</p>
-						<h3 class="product-name"><a href="#">${object['etiquette']}</a></h3>
+						<h3 class="product-name"><a href="">${object['etiquette']}</a></h3>
 						<h4 class="product-price">${object['prixFinal']}DH <del class="product-old-price">${object['prixOffre']}DH</del></h4>
 						<div class="product-rating">
 							<i class="fa fa-star"></i>
@@ -321,7 +338,7 @@ session_start();
 						</div>
 					</div>
 					<div class="add-to-cart">
-						<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+						<button class="add-to-cart-btn" onclick="addToCart(${object['reference']})"><i class="fa fa-shopping-cart" ></i>add to cart</button>
 					</div>
 				</div>
 			`;
@@ -335,7 +352,7 @@ session_start();
 			catg.addEventListener('click', function() {
 				listCatg.forEach(function(c) {
 					c.style.color = 'black';
-				})
+				});
 				document.getElementById('title-catg').innerText = catg.textContent;
 				catg.style.color = '#D10024';
 				menu.innerHTML = `
@@ -389,7 +406,20 @@ session_start();
 			}
 			myRequest.send();
 		});
+
+		function addToCart(ref) {
+			let myRequest = new XMLHttpRequest();
+			myRequest.open("GET", "ajax.php?ref=" + ref, true);
+			myRequest.onreadystatechange = function() {
+				if (this.readyState === 4 && this.status === 200) {
+					console.log(this.responseText);
+				}
+			}
+			myRequest.send();
+
+		}
 	</script>
+
 
 </body>
 
