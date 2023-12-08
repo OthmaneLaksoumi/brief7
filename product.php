@@ -8,10 +8,18 @@ try {
 	$stmt1 = $conn->prepare("SELECT * FROM categories WHERE isHide = 0");
 	$stmt1->execute();
 	$catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+
+	if (isset($_SESSION['client'])) {
+		session_start();
+		$client = $_SESSION['client'];
+		$stmt1 = $conn->prepare("SELECT * FROM panier WHERE client_username = '$client'");
+		$stmt1->execute();
+		$nbrOfPanier = $stmt1->rowCount();
+	}
 } catch (Exception $e) {
 	echo "" . $e->getMessage();
 }
-session_start();
 
 ?>
 
@@ -50,9 +58,14 @@ session_start();
 		#search-input {
 			border-radius: 20px;
 		}
+
 		#pagination {
 			cursor: pointer;
 			margin: 10vh 40%;
+		}
+
+		#panier {
+			cursor: pointer;
 		}
 	</style>
 
@@ -111,8 +124,15 @@ session_start();
 					<!-- ACCOUNT -->
 					<div class="col-md-3 clearfix">
 						<div class="header-ctn">
-
-
+							<?php if (isset($_SESSION['client'])) { ?>
+								<div>
+									<a href="cart.php" id="panier">
+										<i class="fa fa-shopping-cart"></i>
+										<span>Your Cart</span>
+										<div class="qty"><?php echo $nbrOfPanier ?></div>
+									</a>
+								</div>
+							<?php } ?>
 							<!-- Menu Toogle -->
 							<div class="menu-toggle">
 								<a href="#">
@@ -144,9 +164,7 @@ session_start();
 				<ul class="main-nav nav navbar-nav">
 					<li class="li-padding">All Products</li>
 					<?php foreach ($catgs as $catg) { ?>
-						<li class="li-padding">
-							<?php echo $catg['name']; ?>
-						</li>
+						<li class="li-padding"><?php echo $catg['name']; ?></li>
 					<?php } ?>
 				</ul>
 				<!-- /NAV -->
@@ -235,7 +253,7 @@ session_start();
 
 
 	</footer>
-	
+
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
@@ -254,7 +272,7 @@ session_start();
 			var result;
 			let myRequest = new XMLHttpRequest();
 			myRequest.open("GET", "admin/ajaxConn.php?table=" + tableName, false);
-			myRequest.onreadystatechange = function () {
+			myRequest.onreadystatechange = function() {
 				if (this.readyState === 4 && this.status === 200) {
 					result = JSON.parse(this.responseText);
 				}
@@ -264,7 +282,6 @@ session_start();
 		}
 
 		let products = getData("products");
-
 
 		let menu = document.getElementById('menu-product');
 
@@ -299,13 +316,20 @@ session_start();
 			`;
 			menu.appendChild(firstDiv);
 		}
-		products.forEach(function (pro) {
+		// for(let i = 0; i < 4; i++) {
+		// 	displayProducts(products[i]);
+		// }
+		// for(let i = 4; i < 8; i++) {
+		// 	displayProducts(products[i]);
+		// }
+		products.forEach(function(pro) {
 			displayProducts(pro);
 		});
 
-		listCatg.forEach(function (catg) {
-			catg.addEventListener('click', function () {
-				listCatg.forEach(function (c) {
+		listCatg.forEach(function(catg) {
+
+			catg.addEventListener('click', function() {
+				listCatg.forEach(function(c) {
 					c.style.color = 'black';
 				});
 				document.getElementById('title-catg').innerText = catg.textContent;
@@ -318,30 +342,30 @@ session_start();
 					</div>
 				`;
 				if (catg.textContent === 'All Products') {
-					products.forEach(function (pro) {
+					products.forEach(function(pro) {
 						displayProducts(pro);
 					});
 				} else {
-					products.forEach(function (pro) {
+					products.forEach(function(pro) {
+						// console.log(catg.textContent);
+						// console.log();
 						if (pro['catg'] === catg.textContent) displayProducts(pro);
-						console.log(pro['catg']);
-
 					});
 				}
 			});
 		});
-		// Search of Products
+		/* Search of Products */
 		let search = document.getElementById('search-input');
-		search.addEventListener('keyup', function () {
+		search.addEventListener('keyup', function() {
 
 			let myRequest = new XMLHttpRequest();
 			myRequest.open("GET", "admin/ajaxConn.php?liveSearch=" + search.value, true);
-			myRequest.onreadystatechange = function () {
+			myRequest.onreadystatechange = function() {
 				if (this.readyState === 4 && this.status === 200) {
 					// result = JSON.parse(this.responseText);
 					if (this.responseText != "") {
 						menu.innerHTML = '';
-						JSON.parse(this.responseText).forEach(function (pro) {
+						JSON.parse(this.responseText).forEach(function(pro) {
 							displayProducts(pro);
 						});
 					} else {
@@ -352,7 +376,7 @@ session_start();
 								</div>
 							</div>
 				`;
-						products.forEach(function (pro) {
+						products.forEach(function(pro) {
 							displayProducts(pro);
 						});
 					}
@@ -365,7 +389,7 @@ session_start();
 		function addToCart(ref) {
 			let myRequest = new XMLHttpRequest();
 			myRequest.open("GET", "ajax.php?ref=" + ref, true);
-			myRequest.onreadystatechange = function () {
+			myRequest.onreadystatechange = function() {
 				if (this.readyState === 4 && this.status === 200) {
 					console.log(this.responseText);
 				}
@@ -384,7 +408,7 @@ session_start();
 			pagination.appendChild(liNbr);
 		}
 
-		let allList =document.querySelectorAll('.list');
+		let allList = document.querySelectorAll('.list');
 		allList.forEach(function(oneList) {
 			oneList.addEventListener('click', function() {
 				menu.innerHTML = `
@@ -394,10 +418,10 @@ session_start();
 								</div>
 							</div>
 				`;
-			for(let i = itemsPerPage * (Number(oneList.textContent) - 1); i < itemsPerPage * (Number(oneList.textContent)); i++) {
-				displayProducts(products[i]);
-			}
-		});
+				for (let i = itemsPerPage * (Number(oneList.textContent) - 1); i < itemsPerPage * (Number(oneList.textContent)); i++) {
+					displayProducts(products[i]);
+				}
+			});
 		});
 
 

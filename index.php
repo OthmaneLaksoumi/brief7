@@ -7,6 +7,13 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $stmt1 = $conn->prepare("SELECT * FROM categories WHERE isHide = 0");
 $stmt1->execute();
 $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+if (isset($_SESSION['client'])) {
+	$client = $_SESSION['client'];
+	$stmt1 = $conn->prepare("SELECT * FROM panier WHERE client_username = '$client'");
+	$stmt1->execute();
+	$nbrOfPanier = $stmt1->rowCount();
+}
 ?>
 
 
@@ -62,14 +69,14 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 						<li><a href="#"><i class="fa fa-map-marker"></i> Youcode Safi</a></li>
 					</ul>
 					<ul class="header-links pull-right">
-					<?php if (isset($_SESSION['client'])) { ?>
-						<li><a href="#"><i class="fa fa-user-o"></i> <?php echo $_SESSION['client'] ?></a></li>
-						<li><a href="logoutClient.php"><i class="fa fa-user-o"></i> Logout</a></li>
-					<?php } else { ?>
-						<li><a href="loginClient.php"><i class="fa fa-user-o"></i> Login</a></li>
+						<?php if (isset($_SESSION['client'])) { ?>
+							<li><a href="#"><i class="fa fa-user-o"></i> <?php echo $_SESSION['client'] ?></a></li>
+							<li><a href="logoutClient.php"><i class="fa fa-user-o"></i> Logout</a></li>
+						<?php } else { ?>
+							<li><a href="loginClient.php"><i class="fa fa-user-o"></i> Login</a></li>
 
-					<?php } ?>
-				</ul>
+						<?php } ?>
+					</ul>
 					</ul>
 				</div>
 			</div>
@@ -81,7 +88,7 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 					<!-- row -->
 					<div class="row">
 						<!-- LOGO -->
-						<div class="col-md-3">
+						<div class="col-md-8">
 							<div class="header-logo">
 								<a href="index.php" class="logo">
 									<img src="./img/logo.png" alt="">
@@ -89,6 +96,27 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 							</div>
 						</div>
 						<!-- /LOGO -->
+						<div class="col-md-3 clearfix">
+							<div class="header-ctn">
+							<?php if (isset($_SESSION['client'])) { ?>
+								<div>
+									<a href="cart.php" id="panier">
+										<i class="fa fa-shopping-cart"></i>
+										<span>Your Cart</span>
+										<div class="qty"><?php echo $nbrOfPanier ?></div>
+									</a>
+								</div>
+								<?php } ?>
+								<!-- Menu Toogle -->
+								<div class="menu-toggle">
+									<a href="#">
+										<i class="fa fa-bars"></i>
+										<span>Menu</span>
+									</a>
+								</div>
+								<!-- /Menu Toogle -->
+							</div>
+						</div>
 
 						<!-- SEARCH BAR -->
 
@@ -108,10 +136,9 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
+						<li><a class="li-padding" href="product.php">All Products</a></li>
 						<?php foreach ($catgs as $catg) { ?>
-							<li><a class="li-padding" href="product.php">
-									<?php echo $catg['name'] ?>
-								</a></li>
+							<li><a class="li-padding" href="product.php"><?php echo $catg['name'] ?></a></li>
 						<?php } ?>
 
 					</ul>
@@ -129,7 +156,7 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 			<div class="container">
 				<!-- row -->
 				<div class="row">
-					<?php foreach (array_slice($catgs, 2, 3) as $category): ?>
+					<?php foreach (array_slice($catgs, 2, 3) as $category) : ?>
 						<!-- shop -->
 						<div class="col-md-4 col-xs-6">
 							<div class="shop">
@@ -137,9 +164,9 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 									<img src="<?php echo "admin/" . $category['img']; ?>" alt="image">
 								</div>
 								<div class="shop-body">
-									<h3>
-										<?php echo $category['name']; ?><br>Collection
-									</h3>
+									<a href="product.php">
+										<h3><?php echo $category['name']; ?><br>Collection</h3>
+									</a>
 								</div>
 							</div>
 						</div>
@@ -187,7 +214,7 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 											<!-- product -->
 											<div class="product">
 												<div class="product-img">
-												<img src="<?php echo "admin/" . $product['img']; ?>" alt="image">
+													<img src="<?php echo "admin/" . $product['img']; ?>" alt="image">
 												</div>
 												<div class="product-body">
 													<h3 class="product-name"><a href="#">
@@ -204,12 +231,9 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 														<i class="fa fa-star"></i>
 													</div>
 													<div class="product-btns">
-														<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span
-																class="tooltipp">add to wishlist</span></button>
-														<button class="add-to-compare"><i class="fa fa-exchange"></i><span
-																class="tooltipp">add to compare</span></button>
-														<button class="quick-view"><i class="fa fa-eye"></i><span
-																class="tooltipp">quick view</span></button>
+														<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+														<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 													</div>
 												</div>
 												<div class="add-to-cart">
@@ -307,11 +331,11 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 					<!-- <div class="col-md-12">
 						<div class="row">
 							<div class="products-tabs"> -->
-								<!-- tab -->
-								<!-- <div id="tab2" class="tab-pane fade in active">
+					<!-- tab -->
+					<!-- <div id="tab2" class="tab-pane fade in active">
 									<div class="products-slick" data-nav="#slick-nav-2"> -->
-										<!-- product -->
-										<!-- <div class="product">
+					<!-- product -->
+					<!-- <div class="product">
 											<div class="product-img">
 												<img src="./img/product06.png" alt="">
 												<div class="product-label">
@@ -345,10 +369,10 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 													to cart</button>
 											</div>
 										</div> -->
-										<!-- /product -->
+					<!-- /product -->
 
-										<!-- product -->
-										<!-- <div class="product">
+					<!-- product -->
+					<!-- <div class="product">
 											<div class="product-img">
 												<img src="./img/product07.png" alt="">
 												<div class="product-label">
@@ -381,10 +405,10 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 													to cart</button>
 											</div>
 										</div> -->
-										<!-- /product -->
+					<!-- /product -->
 
-										<!-- product -->
-										<!-- <div class="product">
+					<!-- product -->
+					<!-- <div class="product">
 											<div class="product-img">
 												<img src="./img/product08.png" alt="">
 												<div class="product-label">
@@ -412,10 +436,10 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 													to cart</button>
 											</div>
 										</div> -->
-										<!-- /product -->
+					<!-- /product -->
 
-										<!-- product -->
-										<!-- <div class="product">
+					<!-- product -->
+					<!-- <div class="product">
 											<div class="product-img">
 												<img src="./img/product09.png" alt="">
 											</div>
@@ -445,10 +469,10 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 													to cart</button>
 											</div>
 										</div> -->
-										<!-- /product -->
+					<!-- /product -->
 
-										<!-- product -->
-										<!-- <div class="product">
+					<!-- product -->
+					<!-- <div class="product">
 											<div class="product-img">
 												<img src="./img/product01.png" alt="">
 											</div>
@@ -478,19 +502,19 @@ $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 													to cart</button>
 											</div>
 										</div> -->
-										<!-- /product -->
-									<!-- </div>
+					<!-- /product -->
+					<!-- </div>
 									<div id="slick-nav-2" class="products-slick-nav"></div>
 								</div> -->
-								<!-- /tab -->
-							</div>
-						</div>
-					</div>
-					<!-- /Products tab & slick -->
+					<!-- /tab -->
 				</div>
-				<!-- /row -->
 			</div>
-			<!-- /container -->
+		</div>
+		<!-- /Products tab & slick -->
+		</div>
+		<!-- /row -->
+		</div>
+		<!-- /container -->
 		</div>
 		<!-- /SECTION -->
 
