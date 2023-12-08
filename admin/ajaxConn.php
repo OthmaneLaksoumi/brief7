@@ -17,14 +17,15 @@ if (isset($_GET['table'])) {
     echo $$str;
 }
 
-if (isset($_GET['addToCart'])) {
-    // $reference = $_GET['addToCart'];
-    // $stmt2 = $conn->prepare("UPDATE products SET isCart = 1 WHERE reference = '$reference'");
-    // $stmt2->execute();
-    // echo $_GET['addToCart'];
+if (isset($_GET['liveSearch'])) {
+    $search = $_GET['liveSearch'];
+    if ($search != "") {
+        $stmt2 = $conn->prepare("SELECT * FROM products WHERE etiquette LIKE '%$search%'");
+        $stmt2->execute();
+        $searchedProducts = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($searchedProducts);
+    }
 }
-
-
 
 
 
