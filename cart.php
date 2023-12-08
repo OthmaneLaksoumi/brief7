@@ -1,3 +1,8 @@
+
+<?php 
+$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', ''); 
+?>
+
 <?php
 include("connection.php");
 
@@ -244,8 +249,11 @@ $subTotal = 0;
 </body>
 
 </html>
+<<<<<<< HEAD
 
 <?php } else {
 	echo '<h1>Please Login Your Account</h1>';
 	header("Refresh: 1; url=loginClient.php");
 } ?>
+=======
+>>>>>>> 9747852cbc2ff8c59fcef0b00eaac2bfc3fab803

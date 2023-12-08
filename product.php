@@ -70,7 +70,9 @@ session_start();
 				</ul>
 				<ul class="header-links pull-right">
 					<?php if (isset($_SESSION['client'])) { ?>
-						<li><a href="#"><i class="fa fa-user-o"></i> <?php echo $_SESSION['client'] ?></a></li>
+						<li><a href="#"><i class="fa fa-user-o"></i>
+								<?php echo $_SESSION['client'] ?>
+							</a></li>
 						<li><a href="logoutClient.php"><i class="fa fa-user-o"></i> Logout</a></li>
 					<?php } else { ?>
 						<li><a href="loginClient.php"><i class="fa fa-user-o"></i> Login</a></li>
@@ -142,7 +144,9 @@ session_start();
 				<ul class="main-nav nav navbar-nav">
 					<li class="li-padding">All Products</li>
 					<?php foreach ($catgs as $catg) { ?>
-						<li class="li-padding"><?php echo $catg['name']; ?></li>
+						<li class="li-padding">
+							<?php echo $catg['name']; ?>
+						</li>
 					<?php } ?>
 				</ul>
 				<!-- /NAV -->
@@ -194,7 +198,8 @@ session_start();
 					<div class="col-md-3 col-xs-6">
 						<div class="footer">
 							<h3 class="footer-title">About Us</h3>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+								incididunt ut.</p>
 							<ul class="footer-links">
 								<li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
 								<li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
@@ -249,7 +254,7 @@ session_start();
 			var result;
 			let myRequest = new XMLHttpRequest();
 			myRequest.open("GET", "admin/ajaxConn.php?table=" + tableName, false);
-			myRequest.onreadystatechange = function() {
+			myRequest.onreadystatechange = function () {
 				if (this.readyState === 4 && this.status === 200) {
 					result = JSON.parse(this.responseText);
 				}
@@ -294,13 +299,13 @@ session_start();
 			`;
 			menu.appendChild(firstDiv);
 		}
-		products.forEach(function(pro) {
+		products.forEach(function (pro) {
 			displayProducts(pro);
 		});
 
-		listCatg.forEach(function(catg) {
-			catg.addEventListener('click', function() {
-				listCatg.forEach(function(c) {
+		listCatg.forEach(function (catg) {
+			catg.addEventListener('click', function () {
+				listCatg.forEach(function (c) {
 					c.style.color = 'black';
 				});
 				document.getElementById('title-catg').innerText = catg.textContent;
@@ -313,11 +318,11 @@ session_start();
 					</div>
 				`;
 				if (catg.textContent === 'All Products') {
-					products.forEach(function(pro) {
+					products.forEach(function (pro) {
 						displayProducts(pro);
 					});
 				} else {
-					products.forEach(function(pro) {
+					products.forEach(function (pro) {
 						if (pro['catg'] === catg.textContent) displayProducts(pro);
 						console.log(pro['catg']);
 
@@ -327,16 +332,16 @@ session_start();
 		});
 		// Search of Products
 		let search = document.getElementById('search-input');
-		search.addEventListener('keyup', function() {
+		search.addEventListener('keyup', function () {
 
 			let myRequest = new XMLHttpRequest();
 			myRequest.open("GET", "admin/ajaxConn.php?liveSearch=" + search.value, true);
-			myRequest.onreadystatechange = function() {
+			myRequest.onreadystatechange = function () {
 				if (this.readyState === 4 && this.status === 200) {
 					// result = JSON.parse(this.responseText);
 					if (this.responseText != "") {
 						menu.innerHTML = '';
-						JSON.parse(this.responseText).forEach(function(pro) {
+						JSON.parse(this.responseText).forEach(function (pro) {
 							displayProducts(pro);
 						});
 					} else {
@@ -347,7 +352,7 @@ session_start();
 								</div>
 							</div>
 				`;
-						products.forEach(function(pro) {
+						products.forEach(function (pro) {
 							displayProducts(pro);
 						});
 					}
@@ -360,7 +365,7 @@ session_start();
 		function addToCart(ref) {
 			let myRequest = new XMLHttpRequest();
 			myRequest.open("GET", "ajax.php?ref=" + ref, true);
-			myRequest.onreadystatechange = function() {
+			myRequest.onreadystatechange = function () {
 				if (this.readyState === 4 && this.status === 200) {
 					console.log(this.responseText);
 				}
