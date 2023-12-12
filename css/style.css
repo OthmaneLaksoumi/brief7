@@ -726,7 +726,7 @@ textarea.input {
   left: 0px;
   width: 60%;
   background: #d10023a0;
-  opacity: 0.9;
+  opacity: 0.5;
   -webkit-transform: skewX(-45deg);
   -ms-transform: skewX(-45deg);
   transform: skewX(-45deg);
@@ -1066,12 +1066,23 @@ textarea.input {
   background-color: #FFF;
   color: #D10024;
   border-color: #D10024;
-  padding: 0px 30px 0px 50px;
+  /* padding: 0px 30px 0px 50px; */
 }
 
 .product .add-to-cart .add-to-cart-btn:hover>i {
   opacity: 1;
   visibility: visible;
+}
+
+.product .my-add-to-cart button {
+  background-color: #D10024;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 5px 30px 5px 30px;
+  border-radius: 40px;
+  border: none;
+
 }
 
 /*----------------------------*\
@@ -1108,9 +1119,10 @@ textarea.input {
   color: #8D99AE;
 }
 
+/* 
 .product-widget .product-body .product-name {
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .product-widget .product-body .product-name>a {
@@ -1119,7 +1131,7 @@ textarea.input {
 
 .product-widget .product-body .product-name>a:hover, .product-widget .product-body .product-name>a:focus {
   color: #D10024;
-}
+} */
 
 .product-widget .product-body .product-price {
   font-size: 14px;
@@ -1910,6 +1922,12 @@ textarea.input {
 .order-details .order-submit {
   display: block;
   margin-top: 30px;
+}
+
+.order-submit:hover {
+  background-color: white;
+  border: red 1px solid;
+  color: red;
 }
 
 /*=========================================================

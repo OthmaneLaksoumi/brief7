@@ -1,30 +1,15 @@
 <?php
+include('ajaxConn.php');
 
-$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-$stmt = $conn->prepare('SELECT * FROM categories WHERE isHide = 1');
-$stmt->execute();
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmt1 = $conn->prepare("SELECT * FROM categories WHERE isHide = 1");
 $stmt1->execute();
 $res = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
-// echo '<pre>';
-// print_r($products);
-// echo '</pre>';
-
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    // echo '<pre>';
-    // print_r($_POST);
-    // echo '</pre>';
-
+    
     $hideProduct = $_POST["hided"];
-
-    // echo $hideProduct;
-
     $sql1 = "UPDATE categories
         SET isHide = 0
         WHERE name = '$hideProduct'
@@ -37,10 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     header("Refresh: 1; url=afficheCatgMasquer.php");
     exit;
-
-
-
-
 }
 
 
@@ -81,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="col-md-10">
             <h1>Afficher une Produit masqué</h1>
             <?php
-            if (count($products) > 0) {
+            if (count($res) > 0) {
                 ?>
                 <form action="" method="post" class="container">
                     <div class="mb-3">

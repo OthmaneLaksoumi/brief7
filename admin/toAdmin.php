@@ -1,6 +1,6 @@
 <?php
 
-$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
+include("ajaxConn.php");
 $stmt1 = $conn->prepare('SELECT * FROM users WHERE state = 1 AND role = 0');
 $stmt1->execute();
 $users = $stmt1->fetchAll(PDO::FETCH_ASSOC);

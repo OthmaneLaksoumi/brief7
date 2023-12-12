@@ -1,11 +1,3 @@
-<?php
-
-
-
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,14 +14,7 @@
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary container">
         <div class="collapse navbar-collapse d-flex" id="navbarTogglerDemo01">
-            <a class="navbar-brand col-5" href="admin.php">ElectroNacer</a>
-
-            <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="admin.php">Home</a>
-                </li>
-            </ul> -->
-
+            <a class="navbar-brand col-5" href="index.php">ElectroNacer</a>
         </div>
     </nav>
 

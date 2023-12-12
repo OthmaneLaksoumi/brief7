@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary container">
     <div class="collapse navbar-collapse position-relative " id="navbarTogglerDemo01">
-        <a class="navbar-brand col-5" href="admin.php">ElectroNacer</a>
+        <a class="navbar-brand col-5" href="index.php">ElectroNacer</a>
 
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
             <li class="nav-item">
-                <a class="nav-link active" href="admin.php">Home</a>
+                <a class="nav-link active" href="index.php">Home</a>
             </li>
 
             <li class="nav-item">

@@ -1,22 +1,10 @@
 <?php
-session_start();
+include("ajaxConn.php");
+
 if (isset($_SESSION['state'])) { ?>
     <?php
-    $conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-    $stmt1 = $conn->prepare("SELECT * FROM categories");
-    $stmt1->execute();
-    $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
-    $stmt2 = $conn->prepare("SELECT * FROM products");
-    $stmt2->execute();
-    $prod = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-    //     echo "<pre>";
-    // print_r($_POST);
-    // echo "</pre>";
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        // echo "<pre>";
-        // print_r($_POST);
-        // echo "</pre>";
 
         for ($i = 1; $i <= 10; $i++) {
             if (isset($_POST["title" . $i])) {
@@ -36,33 +24,8 @@ if (isset($_SESSION['state'])) { ?>
                 move_uploaded_file($_FILES["img" . $i]['tmp_name'], 'C:\xampp\htdocs\brief6v2\admin\assets\images\\' . $_FILES["img" . $i]['name']);
             }
         }
-
-        // $title = $_POST["title"];
-        // $codeBar = $_POST["codeBar"];
-        // $prixAchat = $_POST["prixAchat"];
-        // $prixFinal = $_POST["prixFinal"];
-        // $desc = $_POST["desc"];
-        // $qntMin = $_POST["qntMin"];
-        // $qntStock = $_POST["qntStock"];
-        // $img = "assets/images/" . $_FILES["img"]["name"];
-        // $catg = $_POST["catg"];
-
-        //     $stmt = $conn->prepare("INSERT INTO 
-        // products(etiquette, codeBarres, prixAchat, prixFinal, prixOffre, descpt, qntMin, qntStock, img, catg)
-        //  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-        //     $stmt->execute([$title, $codeBar, $prixAchat, $prixFinal, $prixFinal, $desc, $qntMin, $qntStock, $img, $catg]);
-
-        //     move_uploaded_file($_FILES['img']['tmp_name'], 'C:\xampp\htdocs\brief7\assets\images\\' . $_FILES['img']['name']);
-
-        // header('Location: ajax.php');
-
     }
-
-
-
-
-    ?>
+?>
 
     <!DOCTYPE html>
     <html lang="en">
@@ -73,19 +36,11 @@ if (isset($_SESSION['state'])) { ?>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <title>Dashboard</title>
         <link rel="stylesheet" href="style.css">
-        <style>
-
-
-
-        </style>
+        <style></style>
     </head>
 
     <body>
         <?php include("head.php") ?>
-
-
-
-
         <section class="dashboard">
             <?php
             include("sideBar.html");
@@ -184,12 +139,6 @@ if (isset($_SESSION['state'])) { ?>
                 return formInsert;
             }
 
-            // console.log(createForm());
-            // addForm.appendChild(createForm());
-
-            // console.log(createProductSection(5));
-
-            // addForm.appendChild(productSection);
             let paragraph = document.createElement('p');
 
             nbrSubmit.addEventListener('click', function() {
@@ -237,7 +186,7 @@ if (isset($_SESSION['state'])) { ?>
     </html>
 
 <?php } else {
-    header('Location: admin.php');
+    header('Location: index.php');
 }
 
 ?>

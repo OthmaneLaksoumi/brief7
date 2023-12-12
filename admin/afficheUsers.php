@@ -1,19 +1,10 @@
 <?php
+include("ajaxConn.php");
 
-$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-$stmt = $conn->prepare("SELECT * FROM users");
-$stmt->execute();
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmt1 = $conn->prepare("SELECT count(*) AS nmbUsers FROM users");
 $stmt1->execute();
 $result = $stmt1->fetch()['nmbUsers'];
-session_start();
-
-
-// echo "<pre>";
-// print_r($result);
-// echo "</pre>";
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +34,7 @@ session_start();
 
         <div class="col-md-10">
             <h1>Liste des utilisateurs
-                <?php echo $result ?>
+                <?php echo "(" . $result . " utilisateurs)"?>
             </h1>
             <table>
                 <tr>

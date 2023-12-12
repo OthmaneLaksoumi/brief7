@@ -1,47 +1,24 @@
 <?php
+include("ajaxConn.php");
 
-$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-$stmt1 = $conn->prepare('SELECT * FROM products WHERE isHide = 0');
-$stmt1->execute();
-$products = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
 $stmt2 = $conn->prepare('SELECT * FROM categories');
 $stmt2->execute();
 $catgs = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-session_start();
-
-// echo '<pre>';
-// print_r($products);
-// echo '</pre>';
-
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // echo '<pre>';
-    // print_r($_POST);
-    // echo '</pre>';
-
     $hideProduct = $_POST["hided"];
-
     $sql = "UPDATE products
         SET isHide = 1
         WHERE etiquette = '$hideProduct'
     ";
-
     $stmt3 = $conn->prepare($sql);
     $stmt3->execute();
 
     header("Refresh: 1; url=hideProduct.php");
     exit;
-
-
-
-
 }
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -68,16 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php
         include("sideBar.html");
         ?>
-        <!-- </div> -->
-        <!-- </div> -->
-
-
-
         <div class="col-md-10">
 
             <h1>Masquer une Produit</h1>
             <?php
-            if (count($products) > 0) {
+            if (count($product) > 0) {
                 ?>
                 <form action="" method="post" class="container">
                     <div class="mb-3">
@@ -92,9 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 if (count($res) > 0) {
                                     echo "<optgroup label=" . $catg["name"] . ">" . $catg["name"];
                                 }
-                                foreach ($products as $product) {
-                                    if ($product["catg"] === $catg["name"]) {
-                                        echo "<option>" . $product["etiquette"] . "</option>";
+                                foreach ($product as $item) {
+                                    if ($item["catg"] === $catg["name"]) {
+                                        echo "<option>" . $item["etiquette"] . "</option>";
                                     }
                                 }
                             }
@@ -108,10 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             } ?>
 
         </div>
-
-
     </section>
-
 </body>
 
 </html>

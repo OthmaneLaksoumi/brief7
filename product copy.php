@@ -186,12 +186,42 @@ try {
 			<!-- row -->
 			<div class="row" id="menu-product">
 
+
 				<div class="col-md-12">
 					<div class="section-title text-center">
 						<h3 class="title" id="title-catg">All Product</h3>
 					</div>
 				</div>
 
+				<?php foreach ($products as $pro) : ?>
+					<div class="col-md-4 col-xs-6">
+						<div class="product">
+							<div class="product-img">
+								<img src="./img/product04.png" alt="">
+								<div class="product-label">
+									<span class="sale">-30%</span>
+									<span class="new">NEW</span>
+								</div>
+							</div>
+							<div class="product-body">
+								<p class="product-category">Category</p>
+								<h3 class="product-name"><a href="#"><?php echo $pro['etiquette'] ?></a></h3>
+								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+								<div class="product-rating">
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+									<i class="fa fa-star"></i>
+								</div>
+								<div class="my-add-to-cart">
+									<button class="add-to-cart-btn">ADD TO CART</button>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				<?php endforeach; ?>
 
 			</div>
 			<!-- /row -->
@@ -280,75 +310,74 @@ try {
 			return result;
 		}
 
-		let products = getData("products");
+		// let products = getData("products");
 
-		let menu = document.getElementById('menu-product');
+		// let menu = document.getElementById('menu-product');
 
-		function displayProducts(object) {
-			let name = object['etiquette'];
-			let ref = Number(object['reference']);
-			let firstDiv = document.createElement('div');
-			firstDiv.className = 'col-md-3 col-xs-6';
-			firstDiv.innerHTML = `
-				<div class="product">
-					<div class="product-img">
-						<img src="admin/${object['img']}" alt="">
-						<div class="product-label">
-									<span class="sale">-${(object['prixFinal'] - object['prixOffre']) / object['prixFinal'] * 100}%</span>
-						</div>
-					</div>
-					
-					<div class="product-body">
-						<p class="product-category">${object['catg']}</p>
-						<h3 class="product-name"><a href="productPage.php?ref=${object['reference']}">${name}</a></h3>
-						<h4 class="product-price">${object['prixOffre']}DH <del class="product-old-price">${object['prixFinal']}DH</del></h4>
-						<div class="product-rating">
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star"></i>
-							<i class="fa fa-star-o"></i>
-						</div>
-					</div>
-					<div class="add-to-cart">
-						<button class="add-to-cart-btn" onclick="addToCart(${ref})">add to cart</button>
-					</div>
-				</div>
-			`;
-			menu.appendChild(firstDiv);
-		}
-		products.forEach(function(pro) {
-			displayProducts(pro);
-		});
+		// function displayProducts(object) {
+		// 	let firstDiv = document.createElement('div');
+		// 	firstDiv.className = 'col-md-3 col-xs-6';
+		// 	firstDiv.innerHTML = `
+		// 		<div class="product">
+		// 			<div class="product-img">
+		// 				<img src="admin/${object['img']}" alt="">
+		// 				<div class="product-label">
+		// 							<span class="sale">-${(object['prixFinal'] - object['prixOffre']) / object['prixFinal'] * 100}%</span>
+		// 				</div>
+		// 			</div>
 
-		listCatg.forEach(function(catg) {
+		// 			<div class="product-body">
+		// 				<p class="product-category">${object['catg']}</p>
+		// 				<h3 class="product-name"><a href="">${object['etiquette']}</a></h3>
+		// 				<h4 class="product-price">${object['prixOffre']}DH <del class="product-old-price">${object['prixFinal']}DH</del></h4>
+		// 				<div class="product-rating">
+		// 					<i class="fa fa-star"></i>
+		// 					<i class="fa fa-star"></i>
+		// 					<i class="fa fa-star"></i>
+		// 					<i class="fa fa-star"></i>
+		// 					<i class="fa fa-star-o"></i>
+		// 				</div>
+		// 			</div>
+		// 			<div class="add-to-cart">
+		// 				<button class="add-to-cart-btn" onclick="addToCart(${object['reference']})"><i class="fa fa-shopping-cart" ></i>add to cart</button>
+		// 			</div>
+		// 		</div>
+		// 	`;
+		// 	menu.appendChild(firstDiv);
+		// }
 
-			catg.addEventListener('click', function() {
-				listCatg.forEach(function(c) {
-					c.style.color = 'black';
-				});
-				document.getElementById('title-catg').innerText = catg.textContent;
-				catg.style.color = '#D10024';
-				menu.innerHTML = `
-					<div class="col-md-12">
-						<div class="section-title text-center">
-							<h3 class="title" id="title-catg">${catg.textContent}</h3>
-						</div>
-					</div>
-				`;
-				if (catg.textContent === 'All Products') {
-					products.forEach(function(pro) {
-						displayProducts(pro);
-					});
-				} else {
-					products.forEach(function(pro) {
-						// console.log(catg.textContent);
-						// console.log();
-						if (pro['catg'] === catg.textContent) displayProducts(pro);
-					});
-				}
-			});
-		});
+		// products.forEach(function(pro) {
+		// 	displayProducts(pro);
+		// });
+
+		// listCatg.forEach(function(catg) {
+
+		// 	catg.addEventListener('click', function() {
+		// 		listCatg.forEach(function(c) {
+		// 			c.style.color = 'black';
+		// 		});
+		// 		document.getElementById('title-catg').innerText = catg.textContent;
+		// 		catg.style.color = '#D10024';
+		// 		menu.innerHTML = `
+		// 			<div class="col-md-12">
+		// 				<div class="section-title text-center">
+		// 					<h3 class="title" id="title-catg">${catg.textContent}</h3>
+		// 				</div>
+		// 			</div>
+		// 		`;
+		// 		if (catg.textContent === 'All Products') {
+		// 			products.forEach(function(pro) {
+		// 				displayProducts(pro);
+		// 			});
+		// 		} else {
+		// 			products.forEach(function(pro) {
+		// 				// console.log(catg.textContent);
+		// 				// console.log();
+		// 				if (pro['catg'] === catg.textContent) displayProducts(pro);
+		// 			});
+		// 		}
+		// 	});
+		// });
 		/* Search of Products */
 		let search = document.getElementById('search-input');
 		search.addEventListener('keyup', function() {
@@ -370,7 +399,7 @@ try {
 									<h3 class="title" id="title-catg">ALl Products</h3>
 								</div>
 							</div>
-						`;
+				`;
 						products.forEach(function(pro) {
 							displayProducts(pro);
 						});
@@ -380,9 +409,6 @@ try {
 			}
 			myRequest.send();
 		});
-		/* End Search of Products */
-
-		/* Add To Cart */
 
 		function addToCart(ref) {
 			let myRequest = new XMLHttpRequest();
@@ -395,24 +421,8 @@ try {
 			myRequest.send();
 		}
 
-		let addToCartBtn = document.querySelectorAll('.add-to-cart-btn');
-		addToCartBtn.forEach(function(btn) {
-			btn.addEventListener('click', function() {
-				btn.style.background = "red";
-				btn.style.color = "white";
-
-				setTimeout(function() {
-					btn.className = 'add-to-cart-btn';	
-					btn.style.background = 'white';
-					btn.style.color = 'red';
-				}, 400);
-			});
-		});
-		/* End Add To Cart */
-
-
 		/* Pagination */
-		let itemsPerPage = 6;
+		let itemsPerPage = 4;
 		let nbrOfPages = Math.ceil(products.length / itemsPerPage);
 		let pagination = document.getElementById('pagination');
 		for (let i = 0; i < nbrOfPages; i++) {

@@ -1,15 +1,14 @@
 <?php
 
 try {
-    $conn = new PDO("mysql:host=localhost;dbname=brief7", 'root', '');
-    // $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    include("ajaxConn.php");
     $stmt = $conn->prepare("INSERT INTO users (email, username, pass, state, role) VALUES (:email, :username, :password, 0, 0)");
     if (isset($_POST["submit"])) {
         $stmt->bindParam(':email', $_POST["email"]);
         $stmt->bindParam(':username', $_POST["username"]);
         $stmt->bindParam(':password', $_POST["password"]);
         $stmt->execute();
-        header("Location: admin.php");
+        header("Location: index.php");
     }
 } catch (PDOException $e) {
     $exist = true;
@@ -32,9 +31,6 @@ $str = "";
 $hashed = password_hash("otman", PASSWORD_ARGON2I);  
 $verifie = password_verify("otmann", $hashed);
 var_dump($verifie);
-
-
-
 ?>
 
 
@@ -55,7 +51,7 @@ var_dump($verifie);
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary container">
         <div class="collapse navbar-collapse d-flex" id="navbarTogglerDemo01">
-            <a class="navbar-brand col-5" href="admin.php">ElectroNacer</a>
+            <a class="navbar-brand col-5" href="index.php">ElectroNacer</a>
         </div>
     </nav>
 
@@ -95,7 +91,7 @@ var_dump($verifie);
 
         <div class="sign">
             <p>Vous avez déjà un compte ? &nbsp;&nbsp;</p>
-            <a href="admin.php">Login</a>
+            <a href="index.php">Login</a>
         </div>
     </div>
 

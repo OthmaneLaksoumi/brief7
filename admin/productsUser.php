@@ -1,16 +1,13 @@
 <?php
 
 try {
-    $conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-    $stmt = $conn->prepare("SELECT * FROM products WHERE isHide = 0");
-    $stmt->execute();
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $stmt1 = $conn->prepare("SELECT * FROM categories WHERE isHide = 0");
-    $stmt1->execute();
-    $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+    include("ajaxConn.php");
+    
 } catch (Exception $e) {
+    echo $e->getMessage();
 }
-session_start();
+
+
 
 ?>
 
@@ -36,7 +33,7 @@ session_start();
 
 
     <?php
-    if (count($products) > 0) {
+    if (count($product) > 0) {
     ?>
         <div class="select">
             <select id="filter">

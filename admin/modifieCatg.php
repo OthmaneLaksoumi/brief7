@@ -1,6 +1,5 @@
 <?php
-$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-
+include("ajaxConn.php");
 if (isset($_POST["modifie"])) {
     $oldName = $_POST["oldName"];
     $name = $_POST["name"];
@@ -24,13 +23,7 @@ if (isset($_POST["modifie"])) {
         move_uploaded_file($_FILES['img']['tmp_name'], 'C:\xampp\htdocs\brief6Vesrsion2\assets\catgImages\\' . $_FILES['img']['name']);
     }
 
-    // echo '<pre>';
-    // print_r($_FILES);
-    // echo '</pre>';
-
-
-
-    header("Location: ajax.php");
+    header("Location: modifieCatg.php");
     exit;
 }
 
@@ -58,11 +51,11 @@ if (isset($_POST["modifie"])) {
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary container">
         <div class="collapse navbar-collapse d-flex" id="navbarTogglerDemo01">
-            <a class="navbar-brand col-5" href="admin.php">ElectroNacer</a>
+            <a class="navbar-brand col-5" href="index.php">ElectroNacer</a>
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="admin.php" id="home">Home</a>
+                    <a class="nav-link active" aria-current="page" href="index.php" id="home">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="" id="home">Products</a>

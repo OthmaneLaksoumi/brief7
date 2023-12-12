@@ -1,17 +1,7 @@
 <?php
-session_start();
-if (isset($_SESSION['state'])) { ?>
-    <?php
-    $conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-    $stmt1 = $conn->prepare("SELECT * FROM categories");
-    $stmt1->execute();
-    $catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
-    $stmt2 = $conn->prepare("SELECT * FROM products");
-    $stmt2->execute();
-    $prod = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-    //     echo "<pre>";
-    // print_r($_POST);
-    // echo "</pre>";
+
+include("ajaxConn.php");
+if (isset($_SESSION['state'])) {
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -27,34 +17,8 @@ if (isset($_SESSION['state'])) { ?>
                 move_uploaded_file($_FILES["img" . $i]['tmp_name'], 'C:\xampp\htdocs\brief6v2\assets\catgImages\\' . $_FILES["img" . $i]['name']);
             }
         }
-
-        //     $title = $_POST["title"];
-        //     $codeBar = $_POST["codeBar"];
-        //     $prixAchat = $_POST["prixAchat"];
-        //     $prixFinal = $_POST["prixFinal"];
-        //     $desc = $_POST["desc"];
-        //     $qntMin = $_POST["qntMin"];
-        //     $qntStock = $_POST["qntStock"];
-        //     $img = "assets/images/" . $_FILES["img"]["name"];
-        //     $catg = $_POST["catg"];
-
-        //     $stmt = $conn->prepare("INSERT INTO 
-        // products(etiquette, codeBarres, prixAchat, prixFinal, prixOffre, descpt, qntMin, qntStock, img, catg)
-        //  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-        //     $stmt->execute([$title, $codeBar, $prixAchat, $prixFinal, $prixFinal, $desc, $qntMin, $qntStock, $img, $catg]);
-
-        //     move_uploaded_file($_FILES['img']['tmp_name'], 'C:\xampp\htdocs\brief7\assets\images\\' . $_FILES['img']['name']);
-
-        // header('Location: ajax.php');
-
     }
-
-
-
-
-    ?>
-
+?>
     <!DOCTYPE html>
     <html lang="en">
 
@@ -64,24 +28,15 @@ if (isset($_SESSION['state'])) { ?>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <title>Dashboard</title>
         <link rel="stylesheet" href="style.css">
-        <style>
-
-
-
-        </style>
+        <style></style>
     </head>
 
     <body>
         <?php include("head.php") ?>
-
-
-
-
         <section class="dashboard">
             <?php
             include("sideBar.html");
             ?>
-
             <div class="col g-3 container-form">
                 <h1>Ajouter une categorie</h1>
 
@@ -195,7 +150,8 @@ if (isset($_SESSION['state'])) { ?>
     </html>
 
 <?php } else {
-    header('Location: admin.php');
+    header('Location: index.php');
+    exit;
 }
 
 ?>

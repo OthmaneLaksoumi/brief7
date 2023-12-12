@@ -1,21 +1,8 @@
 <?php
-
-$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-$stmt1 = $conn->prepare('SELECT * FROM products');
-$stmt1->execute();
-$products = $stmt1->fetchAll(PDO::FETCH_ASSOC);
-$stmt2 = $conn->prepare('SELECT * FROM categories');
-$stmt2->execute();
-$catgs = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-
-session_start();
-// echo '<pre>';
-// print_r($_POST);
-// echo '</pre>';
+include("ajaxConn.php");
 
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
 
     if (isset($_POST["hided"])) {
         $hideProduct = $_POST["hided"];
@@ -24,11 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $productModifie = $stmt3->fetchAll(PDO::FETCH_ASSOC)[0];
         setcookie("ref", $productModifie["codeBarres"]);
     }
-
-    // echo '<pre>';
-    // print_r($_FILES);
-    // echo '</pre>';
-
 
     if (isset($_POST["modifie"])) {
         $ref = $_COOKIE["ref"];
@@ -43,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if (!empty($_FILES['img']['name'])) {
             move_uploaded_file($_FILES['img']['tmp_name'], 'C:\xampp\htdocs\brief6v2\assets\images\\' . $_FILES['img']['name']);
-
 
             $sql = "UPDATE `products` 
         SET `etiquette` = '$title', `descpt` = '$desc', `prixAchat` = '$prixAchat', `prixFinal` = '$prixFinal',
@@ -105,12 +86,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <?php
                         foreach ($catgs as $catg) {
                             echo "<optgroup label=" . $catg["name"] . ">" . $catg["name"];
-                            foreach ($products as $product) {
-                                if ($product["catg"] === $catg["name"]) {
-                                    if ($productModifie["etiquette"] === $product["etiquette"]) {
-                                        echo "<option selected>" . $product["etiquette"] . "</option>";
+                            foreach ($product as $item) {
+                                if ($item["catg"] === $catg["name"]) {
+                                    if ($productModifie["etiquette"] === $item["etiquette"]) {
+                                        echo "<option selected>" . $item["etiquette"] . "</option>";
                                     } else {
-                                        echo "<option>" . $product["etiquette"] . "</option>";
+                                        echo "<option>" . $item["etiquette"] . "</option>";
                                     }
                                 }
                             }

@@ -2,8 +2,7 @@
 
 try {
 
-    $conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-
+    include("ajaxConn.php");
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $email = $_POST["email"];
@@ -15,7 +14,6 @@ try {
 
 
         if (count($result) == 1) {
-            session_start();
             $_SESSION["state"] = $result[0]["state"];
             $_SESSION["role"] = $result[0]["role"];
             if ($result[0]["state"] === 1) {
@@ -23,13 +21,10 @@ try {
             }
             header("Location: validatMessage.php");
             exit;
-            // echo '<pre>';
-            // print_r($result);
-            // echo '</pre>';
         }
     }
 } catch (Exception $e) {
-
+    echo $e->getMessage();
 }
 ?>
 
@@ -41,8 +36,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -54,10 +48,10 @@ try {
     <?php if (!isset($_COOKIE["username"])) { ?>
         <nav class="navbar navbar-expand-lg bg-body-tertiary container">
             <div class="collapse navbar-collapse position-relative " id="navbarTogglerDemo01">
-                <a class="navbar-brand col-6" href="admin.php">ElectroNacer</a>
+                <a class="navbar-brand col-6" href="index.php">ElectroNacer</a>
             </div>
         </nav>
-        <h1>Login For Clients</h1>
+        <h1>Login</h1>
         <div class="parent-form">
             <form action="" method="post" class="container">
                 <div class="mb-3">
@@ -84,13 +78,13 @@ try {
             </div>
         </div>
 
-        <?php
+    <?php
     } else {
 
         include("productsUser.php");
 
 
-        ?>
+    ?>
         <!-- <script>
         let home =document.getElementById("home");
         home.setAttribute("href", "google.com");
@@ -99,7 +93,7 @@ try {
 
 
 
-        <?php
+    <?php
 
     }
 

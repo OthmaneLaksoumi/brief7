@@ -1,20 +1,8 @@
 <?php
+include("ajaxConn.php");
 
-$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
-$stmt1 = $conn->prepare('SELECT * FROM products');
-$stmt1->execute();
-$products = $stmt1->fetchAll(PDO::FETCH_ASSOC);
-$stmt2 = $conn->prepare('SELECT * FROM categories WHERE isHide = 0');
-$stmt2->execute();
-$catgs = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-
-session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    // echo '<pre>';
-    // print_r($_POST);
-    // echo '</pre>';
 
     $hideCatg = $_POST["hided"];
 
@@ -27,11 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     header("Refresh: 1; url=hideCatg.php");
     exit;
 }
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -58,11 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php
         include("sideBar.html");
         ?>
-        <!-- </div> -->
-        <!-- </div> -->
-
-
-
         <div class="col-md-10">
             <h1>Masquer une Categorie</h1>
             <?php if (count($catgs) > 0) { ?>

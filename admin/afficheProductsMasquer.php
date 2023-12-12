@@ -1,13 +1,13 @@
 <?php
+include("ajaxConn.php");
 
-$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
 $stmt1 = $conn->prepare('SELECT * FROM products WHERE isHide = 1');
 $stmt1->execute();
 $products = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 $stmt2 = $conn->prepare('SELECT * FROM categories');
 $stmt2->execute();
 $catgs = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-session_start();
+
 
 // echo '<pre>';
 // print_r($products);
@@ -16,32 +16,17 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    // echo '<pre>';
-    // print_r($_POST);
-    // echo '</pre>';
-
     $hideProduct = $_POST["hided"];
-
     $sql = "UPDATE products
         SET isHide = 0
         WHERE etiquette = '$hideProduct'
     ";
-
     $stmt3 = $conn->prepare($sql);
     $stmt3->execute();
 
-    header("Refresh: 1; url=afficheMasquer.php");
+    header("Refresh: 1; url=afficheProductsMasquer.php");
     exit;
-
-
-
-
 }
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -68,11 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php
         include("sideBar.html");
         ?>
-        <!-- </div> -->
-        <!-- </div> -->
-
-
-
         <div class="col-md-10">
             <h1>Afficher une Produit masqués</h1>
             <?php
