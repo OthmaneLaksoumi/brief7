@@ -1,24 +1,49 @@
 <?php
-
+session_start();
 $conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
 if (isset($_GET['ref'])) {
-    $client1 = $_SESSION['client'];
+    $client = $_SESSION['client'];
     $ref = $_GET['ref'];
-    $stmt = $conn->prepare("SELECT qnt FROM panier WHERE client_username = '$client1' AND product_ref = '$ref'");
+    $stmt = $conn->prepare("SELECT qnt FROM panier WHERE client_username = '$client' AND product_ref = '$ref'");
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (empty($result)) {
-        $stmt1 = $conn->prepare("INSERT INTO panier(client_username, product_ref, qnt) VALUES ('$client1', '$ref', 1)");
+        $qnt = 1;
+        $stmt1 = $conn->prepare("INSERT INTO panier(client_username, product_ref, qnt) VALUES ('$client', '$ref', 1)");
         $stmt1->execute();
-    }
-    else if(isset($_GET['qty'])) {
-        $qnt = $_GET['qty'];
+    } else {
+        $qnt = $result[0]['qnt'] + 1;
         $stmt1 = $conn->prepare("UPDATE panier SET qnt = '$qnt' WHERE product_ref = '$ref'");
         $stmt1->execute();
     }
+    echo $qnt;
 }
 
+if(isset($_GET["in_panier"])) {
+    $client = $_SESSION['client'];
+    $ref = $_GET['in_panier'];
+    $stmt = $conn->prepare("SELECT qnt FROM panier WHERE client_username = '$client' AND product_ref = '$ref'");
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if(empty($result)) {
+        echo 0;
+    }else {
+        print_r($result[0]['qnt']);
+    }
+
+}
+
+
+
+// $stmt = $conn->prepare("SELECT qnt FROM panier WHERE client_username = 'laksoumi99' AND product_ref = 3");
+// $stmt->execute();
+// $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// echo '<pre>';
+// print_r($result);
+// echo '</pre>';
 // if (isset($_GET['minus'])) {
 //     $client1 = $_SESSION['client'];
 //     $ref = $_GET['minus'];

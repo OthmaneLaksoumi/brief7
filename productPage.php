@@ -1,5 +1,7 @@
 <?php
+session_start();
 include("connection.php");
+if(isset($_GET['ref'])) {
 $ref = $_GET['ref'];
 $stmt = $conn->prepare("SELECT * FROM products WHERE isHide = 0 AND reference = '$ref'");
 $stmt->execute();
@@ -418,17 +420,45 @@ if (isset($_SESSION['client'])) {
 	<script src="js/main.js"></script>
 
 	<script>
-		function addToCart(ref) {
-			console.log(ref);
+		function exist_in_panier(ref) {
+			var result;
 			let myRequest = new XMLHttpRequest();
-			myRequest.open("GET", "ajax.php?ref=" + ref, true);
+			myRequest.open("GET", "ajax.php?in_panier=" + ref, false);
 			myRequest.onreadystatechange = function() {
 				if (this.readyState === 4 && this.status === 200) {
-					console.log(this.responseText);
+					result = JSON.parse(this.responseText);
 				}
 			}
 			myRequest.send();
+			console.log(result);
+			return result > 1 ? true : false;
 		}
+
+		function addToCart(ref) {
+			let nbrPanier = Number(document.querySelector(".qty").innerHTML);
+			let myRequest = new XMLHttpRequest();
+			myRequest.open("GET", "ajax.php?ref=" + ref, false);
+			myRequest.onreadystatechange = function() {
+				if (this.readyState === 4 && this.status === 200) {
+				}
+			}
+			myRequest.send();
+			if (!exist_in_panier(ref)) {
+				document.querySelector(".qty").innerHTML = nbrPanier + 1;
+			}
+
+		}
+		// function addToCart(ref) {
+		// 	console.log(ref);
+		// 	let myRequest = new XMLHttpRequest();
+		// 	myRequest.open("GET", "ajax.php?ref=" + ref, true);
+		// 	myRequest.onreadystatechange = function() {
+		// 		if (this.readyState === 4 && this.status === 200) {
+		// 			console.log(this.responseText);
+		// 		}
+		// 	}
+		// 	myRequest.send();
+		// }
 
 		let plus = document.querySelector('.qty-up');
 		let minus = document.querySelector('.qty-down');
@@ -470,3 +500,8 @@ if (isset($_SESSION['client'])) {
 </body>
 
 </html>
+
+<?php } else {
+	header("Location: index.php");
+	exit;
+}?>

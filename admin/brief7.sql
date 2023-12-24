@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2023 at 10:22 AM
+-- Generation Time: Dec 24, 2023 at 03:42 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,7 +42,7 @@ INSERT INTO `categories` (`name`, `descrt`, `img`, `isHide`) VALUES
 ('Accessoires', 'Description d\'accessoires categorie', 'assets/catgImages/Accessoire_img1.png', 0),
 ('Afficheur', 'The term \"Afficheur\" typically refers to a display or visual output device. In the context of electronics and technology, an \"afficheur\" is often associated with various types of display technologies used to present information or data visually. This can include LED displays, LCD screens, OLED panels, and other visual output components.', 'assets/catgImages/Afficheur_img1.png', 0),
 ('Batterie', 'A battery is a device that stores energy in a chemical form and converts it into electrical energy when needed. It is composed of electrochemical cells that enable the transfer of electrons between reactive materials.', 'assets/catgImages/Batterie_img1.png', 0),
-('Capteur', 'Description de la categorie Accessoire.', 'assets/catgImages/Capteur_img1.png', 0),
+('Capteur', 'Description de la categorie Accessoire.', 'assets/catgImages/Capteur_img1.png', 1),
 ('Composants', 'La catégorie \"Composants Électroniques\" se réfère à une classification de produits dans le domaine de l\'électronique. Cette catégorie englobe une variété de composants individuels utilisés dans la conception, la fabrication et la maintenance de circuits électroniques.', 'assets/catgImages/composant_img1.png', 0),
 ('Diode', 'The \"Diode\" category encompasses a variety of fundamental electronic components used in electronic circuits. A diode is a semiconductor device that allows the passage of electric current in one direction while blocking it in the opposite direction.', 'assets/catgImages/Diode_img1.png', 0),
 ('Robot', 'The \"Robots\" category offers a variety of intelligent mechanical creations designed to simplify daily life, stimulate curiosity, and push the boundaries of innovation. These robots, ranging from educational toys to sophisticated automatons.', 'assets/catgImages/Robot_img1.png', 0);
@@ -82,10 +82,19 @@ CREATE TABLE `commande` (
   `command_id` int(11) NOT NULL,
   `client_username` varchar(255) NOT NULL,
   `createDate` datetime NOT NULL DEFAULT current_timestamp(),
-  `envoiDate` date NOT NULL DEFAULT current_timestamp(),
-  `livraisonDate` date NOT NULL DEFAULT current_timestamp(),
-  `totalPrice` decimal(5,2) NOT NULL
+  `envoiDate` date NOT NULL,
+  `livraisonDate` date NOT NULL,
+  `totalPrice` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `commande`
+--
+
+INSERT INTO `commande` (`command_id`, `client_username`, `createDate`, `envoiDate`, `livraisonDate`, `totalPrice`) VALUES
+(66, 'laksoumi99', '2023-12-24 15:24:06', '2023-12-25', '2024-01-03', 98.00),
+(67, 'laksoumi99', '2023-12-24 15:25:15', '2023-12-25', '2024-01-03', 540.00),
+(68, 'jalal2005', '2023-12-24 15:26:11', '2023-12-25', '2024-01-03', 620.00);
 
 -- --------------------------------------------------------
 
@@ -99,6 +108,23 @@ CREATE TABLE `linecommand` (
   `qnt` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `linecommand`
+--
+
+INSERT INTO `linecommand` (`command_id`, `product_ref`, `qnt`) VALUES
+(66, 00003, 4),
+(66, 00004, 1),
+(66, 00005, 1),
+(66, 00013, 1),
+(67, 00003, 1),
+(67, 00013, 1),
+(67, 00015, 3),
+(67, 00016, 1),
+(68, 00002, 2),
+(68, 00003, 2),
+(68, 00004, 10);
+
 -- --------------------------------------------------------
 
 --
@@ -110,17 +136,6 @@ CREATE TABLE `panier` (
   `product_ref` int(5) UNSIGNED ZEROFILL NOT NULL,
   `qnt` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `panier`
---
-
-INSERT INTO `panier` (`client_username`, `product_ref`, `qnt`) VALUES
-('jalal2005', 00002, 1),
-('jalal2005', 00003, 1),
-('jalal2005', 00004, 1),
-('laksoumi99', 00003, 5),
-('laksoumi99', 00011, 5);
 
 -- --------------------------------------------------------
 
@@ -161,7 +176,7 @@ INSERT INTO `products` (`reference`, `etiquette`, `descpt`, `codeBarres`, `img`,
 (00011, 'Module Charge Décharge 3.7V 9V 5V 2AA', 'Tension d’entrée: DC4.5-8V, Tension de sortie: 4.3-27V ((boost rotatif dans le sens antihoraire du positionneur).', 'batterie000001', 'assets/images/Batterie_img1.png', 30.00, 55.00, 44.00, 50, 73, 'Batterie', 0),
 (00012, 'Pile lithium rechargeable 18650 3.7V', 'Batterie lithium rechargeable 18650 3.7V', 'batterie000002', 'assets/images/Batterie_img2.png', 17.00, 30.00, 30.00, 50, 53, 'Batterie', 0),
 (00013, 'support pour 1 piles 18650', 'support pour 1 piles 18650', 'batterie000003', 'assets/images/Batterie_img3.png', 13.00, 20.00, 20.00, 50, 59, 'Batterie', 0),
-(00014, 'Capteur effet Hall', 'Capteur effet Hall Pour Arduino KY-024', 'capteur000001', 'assets/images/Capteur_img1.png', 19.00, 30.00, 30.00, 80, 84, 'Capteur', 0),
+(00014, 'Capteur effet Hall', 'Capteur effet Hall Pour Arduino KY-024', 'capteur000001', 'assets/images/Capteur_img1.png', 19.00, 30.00, 30.00, 80, 84, 'Capteur', 1),
 (00015, 'Carte mémoire 16 GB Class 10', 'Carte mémoire 16 GB Class 10.', 'acc000001', 'assets/images/Accessoire_img1.png', 80.00, 120.00, 120.00, 400, 410, 'Accessoires', 0),
 (00016, 'Carte mémoire 32 GB Class 10', 'Carte mémoire 32 GB Class 10.', 'acc000002', 'assets/images/Accessoire_img2.png', 115.00, 150.00, 150.00, 400, 388, 'Accessoires', 0);
 
@@ -257,13 +272,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `commande`
 --
 ALTER TABLE `commande`
-  MODIFY `command_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `command_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `reference` int(5) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `reference` int(5) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- Constraints for dumped tables

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 try {
 	$conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
 	$stmt = $conn->prepare("SELECT * FROM products WHERE isHide = 0");
@@ -9,7 +9,7 @@ try {
 	$stmt1->execute();
 	$catgs = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
-	
+
 	if (isset($_SESSION['client'])) {
 		$client = $_SESSION['client'];
 		$stmt1 = $conn->prepare("SELECT * FROM panier WHERE client_username = '$client'");
@@ -256,12 +256,12 @@ try {
 	<!-- /FOOTER -->
 
 	<!-- jQuery Plugins -->
-	<script src="js/jquery.min.js"></script>
+	<!-- <script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/slick.min.js"></script>
 	<script src="js/nouislider.min.js"></script>
 	<script src="js/jquery.zoom.min.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/main.js"></script> -->
 
 	<script>
 		let listCatg = document.querySelectorAll('.li-padding');
@@ -288,9 +288,9 @@ try {
 			let name = object['etiquette'];
 			let ref = Number(object['reference']);
 			let firstDiv = document.createElement('div');
-			firstDiv.className = 'col-md-3 col-xs-6';
+			firstDiv.className = 'col-md-3';
 			firstDiv.innerHTML = `
-				<div class="product">
+				<div class="product" title="${name}">
 					<div class="product-img">
 						<img src="admin/${object['img']}" alt="">
 						<div class="product-label">
@@ -300,7 +300,7 @@ try {
 					
 					<div class="product-body">
 						<p class="product-category">${object['catg']}</p>
-						<h3 class="product-name"><a href="productPage.php?ref=${object['reference']}">${name}</a></h3>
+						<h3 class="product-name"><a href="productPage.php?ref=${object['reference']}">${name.substring(0, 22)}...</a></h3>
 						<h4 class="product-price">${object['prixOffre']}DH <del class="product-old-price">${object['prixFinal']}DH</del></h4>
 						<div class="product-rating">
 							<i class="fa fa-star"></i>
@@ -317,8 +317,10 @@ try {
 			`;
 			menu.appendChild(firstDiv);
 		}
-		products.forEach(function(pro) {
-			displayProducts(pro);
+
+		let itemsPerPage = 4;
+		products.forEach(function(pro, i) {
+			if (i < itemsPerPage) displayProducts(pro);
 		});
 
 		listCatg.forEach(function(catg) {
@@ -384,15 +386,33 @@ try {
 
 		/* Add To Cart */
 
-		function addToCart(ref) {
+		function exist_in_panier(ref) {
+			var result;
 			let myRequest = new XMLHttpRequest();
-			myRequest.open("GET", "ajax.php?ref=" + ref, true);
+			myRequest.open("GET", "ajax.php?in_panier=" + ref, false);
 			myRequest.onreadystatechange = function() {
 				if (this.readyState === 4 && this.status === 200) {
-					console.log(this.responseText);
+					result = JSON.parse(this.responseText);
 				}
 			}
 			myRequest.send();
+			console.log(result);
+			return result > 1 ? true : false;
+		}
+
+		function addToCart(ref) {
+			let nbrPanier = Number(document.querySelector(".qty").innerHTML);
+			let myRequest = new XMLHttpRequest();
+			myRequest.open("GET", "ajax.php?ref=" + ref, false);
+			myRequest.onreadystatechange = function() {
+				if (this.readyState === 4 && this.status === 200) {
+				}
+			}
+			myRequest.send();
+			if (!exist_in_panier(ref)) {
+				document.querySelector(".qty").innerHTML = nbrPanier + 1;
+			}
+
 		}
 
 		let addToCartBtn = document.querySelectorAll('.add-to-cart-btn');
@@ -402,7 +422,7 @@ try {
 				btn.style.color = "white";
 
 				setTimeout(function() {
-					btn.className = 'add-to-cart-btn';	
+					btn.className = 'add-to-cart-btn';
 					btn.style.background = 'white';
 					btn.style.color = 'red';
 				}, 400);
@@ -412,7 +432,7 @@ try {
 
 
 		/* Pagination */
-		let itemsPerPage = 6;
+		// let itemsPerPage = 6;
 		let nbrOfPages = Math.ceil(products.length / itemsPerPage);
 		let pagination = document.getElementById('pagination');
 		for (let i = 0; i < nbrOfPages; i++) {
