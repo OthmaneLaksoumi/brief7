@@ -15,6 +15,10 @@ if (isset($_SESSION['client'])) {
 	$stmt1->execute();
 	$products = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
+	// echo '<pre>';
+	// print_r($products);
+	// echo '</pre>';
+
 	$subTotal = 0;
 
 	$stmt2 = $conn->prepare("SELECT * FROM panier WHERE client_username = '$client'");

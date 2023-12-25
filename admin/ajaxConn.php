@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 $conn = new PDO('mysql:host=localhost;dbname=brief7', 'root', '');
 
 $stmt = $conn->prepare('SELECT * FROM categories WHERE isHide = 0');
@@ -34,6 +34,7 @@ if (isset($_GET['liveSearch'])) {
         echo json_encode($searchedProducts);
     }
 }
+
 
 
 

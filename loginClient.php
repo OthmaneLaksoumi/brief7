@@ -9,10 +9,11 @@ if (!isset($_SESSION['client'])) {
 		$username = $_POST['username'];
 		$pass = $_POST['password'];
 
-		$stmt = $conn->prepare("SELECT * FROM clients WHERE username = '$username' AND password = '$pass'");
+		$stmt = $conn->prepare("SELECT * FROM clients WHERE username = '$username'"); //password = '$pass'
 		$stmt->execute();
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if (count($result) > 0) {
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+		if (count($result) > 0 && password_verify($pass, $result["password"])) {
 			$_SESSION["client"] = $username;
 			header('Location: index.php');
 			exit;

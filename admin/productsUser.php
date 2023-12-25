@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 try {
     include("ajaxConn.php");
     
@@ -28,7 +28,7 @@ try {
 
     <?php include("head.php") ?>
 
-    <?php echo "<h1>Welcome " . $_COOKIE["username"] . "</h1>"; ?>
+    <?php if(isset($_COOKIE["username"])) echo "<h1>Welcome " . $_COOKIE["username"] . "</h1>"; ?>
 
 
 

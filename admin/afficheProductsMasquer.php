@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("ajaxConn.php");
 
 $stmt1 = $conn->prepare('SELECT * FROM products WHERE isHide = 1');

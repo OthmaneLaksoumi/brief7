@@ -1,7 +1,6 @@
 <?php
-
 try {
-
+    session_start();
     include("ajaxConn.php");
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -80,34 +79,10 @@ try {
 
     <?php
     } else {
-
-        include("productsUser.php");
-
-
-    ?>
-        <!-- <script>
-        let home =document.getElementById("home");
-        home.setAttribute("href", "google.com");
-        console.log(home);
-    </script> -->
-
-
-
-    <?php
-
+        header("Location: productsUser.php");
+        exit;
     }
-
     ?>
-
-
-
-
-
-
-
-
-
-
 </body>
 
 </html>

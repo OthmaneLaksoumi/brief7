@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include("ajaxConn.php");
 $stmt1 = $conn->prepare('SELECT * FROM users WHERE state = 1 AND role = 0');
 $stmt1->execute();

@@ -11,6 +11,9 @@ if (isset($_SESSION['client'])) {
 	$nbrOfPanier = $stmt1->rowCount();
 	$panier = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
+	echo '<pre>';
+	print_r($panier);
+	echo '</pre>';
 
 	$subTotal = 0;
 
@@ -47,7 +50,7 @@ if (isset($_SESSION['client'])) {
 
 		
 
-		/* Ajouter les commands dans linecommand tableau */
+		/* Ajouter les produits liée à la commande dans linecommand tableau */
 		foreach ($panier as $item) {
 			$refPro = $item["product_ref"];
 			$quantity = $item["qnt"];

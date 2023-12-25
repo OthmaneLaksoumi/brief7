@@ -4,9 +4,10 @@ try {
     include("ajaxConn.php");
     $stmt = $conn->prepare("INSERT INTO users (email, username, pass, state, role) VALUES (:email, :username, :password, 0, 0)");
     if (isset($_POST["submit"])) {
+        $pass = password_hash($_POST['password'], PASSWORD_ARGON2I);
         $stmt->bindParam(':email', $_POST["email"]);
         $stmt->bindParam(':username', $_POST["username"]);
-        $stmt->bindParam(':password', $_POST["password"]);
+        $stmt->bindParam(':password', $pass);
         $stmt->execute();
         header("Location: index.php");
     }
@@ -30,7 +31,7 @@ try {
 $str = "";
 $hashed = password_hash("otman", PASSWORD_ARGON2I);  
 $verifie = password_verify("otmann", $hashed);
-var_dump($verifie);
+
 ?>
 
 
